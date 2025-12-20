@@ -1,7 +1,7 @@
-package com.nlson.chat.dtos
+package com.nlson.chat.dtos.create
 
 data class UserDto(
     val username: String,
     val email: String,
-    val password: String,
+    val password: String
 )

@@ -6,4 +6,6 @@ spring:
       host: localhost
       port: 27017
       database: magu
-
+  graphql:
+    graphiql:
+      enabled: true

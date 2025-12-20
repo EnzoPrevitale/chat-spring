@@ -1,15 +1,14 @@
 type User {
-    id: ID
-    name: String
-    email: String
-    password: String
+    id: ID!
+    username: String!
+    email: String!
 }
 
-extend type Query {
-    users: [User]
+type Query {
+    allUsers: [User]
     userById(id: ID!): User
 }
 
 type Mutation {
-    createUser(name: String!, email: String!): User
+    createUser(username: String!, email: String!, password: String!): User
 }

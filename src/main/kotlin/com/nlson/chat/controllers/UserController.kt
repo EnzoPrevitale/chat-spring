@@ -1,31 +1,21 @@
 package com.nlson.chat.controllers
 
-import com.nlson.chat.dtos.UserDto
 import com.nlson.chat.models.User
-import com.nlson.chat.services.UserService
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import java.net.URI
+import com.nlson.chat.service.UserService
+import org.springframework.graphql.data.method.annotation.QueryMapping
+import org.springframework.stereotype.Controller
+import org.springframework.graphql.data.method.annotation.Argument
 
-@RestController
-@RequestMapping("/user")
-class UserController(
-    private val service: UserService
-) {
+@Controller
+class UserController(val service: UserService) {
 
-    @GetMapping
-    fun get(): ResponseEntity<List<User>> {
-        return ResponseEntity.ok(service.findAll())
+    @QueryMapping("allUsers")
+    fun getUsers(): List<User> {
+        return service.listUsers()
     }
 
-    @PostMapping
-    fun post(@RequestBody dto: UserDto): ResponseEntity<User> {
-        val user: User = service.create(dto)
-        return ResponseEntity.status(HttpStatus.CREATED).body(user)
+    @QueryMapping("userById")
+    fun getUser(@Argument id: String): User {
+        return service.listUserById(id)
     }
 }
