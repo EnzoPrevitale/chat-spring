@@ -16,20 +16,18 @@ class UserService(val repository: UserRepository) {
 
     fun listUserById(id: String): User = repository.findById(id).orElseThrow { NotFound() }
 
-    fun createUser(dto: UserDto): List<User> {
+    fun createUser(dto: UserDto): User {
         val user = User(
             username = dto.username,
             email = dto.email,
             password = dto.password
         )
 
-        repository.save(user)
-
-        return repository.findAll()
+        return repository.save(user)
     }
 
 
-    fun updateUser(id: String, dto: UpdateUserDto): List<User> {
+    fun updateUser(id: String, dto: UpdateUserDto): User {
         val user: User = repository.findById(id)
             .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
 
@@ -37,14 +35,15 @@ class UserService(val repository: UserRepository) {
         if (dto.email != null) user.email = dto.email
         if (dto.password != null) user.password = dto.password
 
-        return repository.findAll()
+        return repository.save(user)
     }
     
-    fun deleteUser(id: String) {
+    fun deleteUser(id: String): String {
         val user: User = repository.findById(id)
             .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
 
         repository.delete(user)
+        return id
     }
 
 }
