@@ -4,26 +4,31 @@ import com.nlson.chat.dtos.create.UserDto
 import com.nlson.chat.dtos.update.UpdateUserDto
 import com.nlson.chat.models.User
 import com.nlson.chat.service.UserService
-import org.springframework.graphql.data.method.annotation.QueryMapping
-import org.springframework.stereotype.Controller
-import org.springframework.graphql.data.method.annotation.Argument
-import org.springframework.graphql.data.method.annotation.MutationMapping
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
-@Controller
+@RestController
+@RequestMapping("/users")
 class UserController(val service: UserService) {
 
-    @QueryMapping("allUsers")
+    @GetMapping
     fun getUsers(): List<User> = service.listUsers()
 
-    @QueryMapping("userById")
-    fun getUser(@Argument id: String): User = service.listUserById(id)
+    @GetMapping("/{id}")
+    fun getUser(@PathVariable id: String): User = service.listUserById(id)
 
-    @MutationMapping("createUser")
-    fun createUser(@Argument input: UserDto): User = service.createUser(input)
+    @PostMapping
+    fun createUser(@RequestBody input: UserDto): User = service.createUser(input)
 
-    @MutationMapping("updateUser")
-    fun updateUser(@Argument id: String, @Argument input: UpdateUserDto): User = service.updateUser(id, input)
+    @PatchMapping("/{id}")
+    fun updateUser(@PathVariable id: String, @RequestBody input: UpdateUserDto): User = service.updateUser(id, input)
 
-    @MutationMapping("deleteUser")
-    fun deleteUser(@Argument id: String): String = service.deleteUser(id)
+    @DeleteMapping("/{id}")
+    fun deleteUser(@PathVariable id: String): String = service.deleteUser(id)
 }

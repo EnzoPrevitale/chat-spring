@@ -9,3 +9,6 @@ spring:
   graphql:
     graphiql:
       enabled: true
+springdoc:
+  swagger-ui:
+    path: /docs
